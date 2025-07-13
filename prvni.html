@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Investigo - Co je burza?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #F8F9D7 0%, #E49BFF 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(133, 15, 141, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #850F8D 0%, #C738BD 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #F8F9D7;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .section {
+            padding: 30px;
+            border-bottom: 2px solid #E49BFF;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        /* AI Průvodce */
+        .ai-guide {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, #E49BFF 0%, #F8F9D7 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: #850F8D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            box-shadow: 0 5px 15px rgba(133, 15, 141, 0.3);
+        }
+
+        .guide-text {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Mikro-lekce */
+        .lesson-content {
+            background: #F8F9D7;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            line-height: 1.6;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .lesson-content strong {
+            color: #850F8D;
+        }
+
+        /* Interaktivní otázka */
+        .question-container {
+            text-align: center;
+        }
+
+        .question {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #850F8D;
+            margin-bottom: 25px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 20px;
+            background: white;
+            border: 3px solid #E49BFF;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        .answer-btn:hover {
+            background: #E49BFF;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .answer-btn.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .answer-btn.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Výpočetní scénář */
+        .calculation {
+            text-align: center;
+        }
+
+        .calc-scenario {
+            background: #E49BFF;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .calc-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .calc-input input {
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #C738BD;
+            border-radius: 10px;
+            text-align: center;
+            width: 120px;
+        }
+
+        .calc-btn {
+            padding: 15px 30px;
+            background: #850F8D;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .calc-btn:hover {
+            background: #C738BD;
+            transform: translateY(-2px);
+        }
+
+        .calc-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .calc-result.correct {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .calc-result.incorrect {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Minihra */
+        .game-container {
+            text-align: center;
+        }
+
+        .game-card {
+            background: white;
+            border: 3px solid #E49BFF;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #850F8D;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .game-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .game-btn.stock-exchange {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .game-btn.marketplace {
+            background: #f44336;
+            color: white;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .game-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .game-score {
+            font-size: 1.2em;
+            color: #850F8D;
+            margin-bottom: 20px;
+        }
+
+        /* Investiční blbost */
+        .mistake-finder {
+            text-align: center;
+        }
+
+        .mistake-sentence {
+            background: #F8F9D7;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .mistake-word {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 2px;
+            background: #E49BFF;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mistake-word:hover {
+            background: #C738BD;
+            transform: translateY(-2px);
+        }
+
+        .mistake-word.correct {
+            background: #f44336;
+            animation: shake 0.5s;
+        }
+
+        .mistake-word.incorrect {
+            background: #4CAF50;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .mistake-feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .mistake-counter {
+            font-size: 1.2em;
+            color: #850F8D;
+            margin-bottom: 20px;
+        }
+
+        /* Shrnutí */
+        .summary {
+            background: linear-gradient(135deg, #850F8D 0%, #C738BD 100%);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin: -30px -30px 0 -30px;
+        }
+
+        .xp-award {
+            font-size: 2em;
+            font-weight: bold;
+            color: #F8F9D7;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .completion-badge {
+            display: inline-block;
+            background: #F8F9D7;
+            color: #850F8D;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .linkie.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+        /* Responzivní design */
+        @media (max-width: 600px) {
+            .answers {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .ai-guide {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .mistake-sentence {
+                font-size: 1.1em;
+            }
+        }
+    </style></head>
+<body>
+     <div class="container">
+        <!-- Header s progress barem -->
+        <div class="header">
+            <h1>Co je burza?</h1>
+            <p>Lekce 3 - Investigo</p>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+        </div>
+
+
+
+            <div class="section">
+            <div class="ai-guide">
+                <div class="avatar">🤖</div>
+                <div class="guide-text">
+                    <h3>Ahoj! Vítej zpět! 👋</h3>
+                    <p>Dnes si povíme o burze - místě, kde se obchoduje s akciemi! Je to jako obří tržiště, ale místo zeleniny se tam prodávají kousky firem. Připrav se na další dobrodružství ve světě investování!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mikro-lekce -->
+        <div class="section">
+            <h2 style="color: #850F8D; margin-bottom: 20px; text-align: center;">📈 Co je burza?</h2>
+            <div class="lesson-content">
+                <strong>Burza je trh, kde se obchodují akcie.</strong> Je to místo, kde se kupují a prodávají podíly ve firmách. 🏪
+                <br><br>
+                Představ si to jako obří tržiště - ale místo jablek a mrkve se tam prodávají kousky Applu a Tesly! 📱🚗
+            </div>
+        </div>
+
+        <!-- Interaktivní otázka -->
+        <div class="section">
+            <h2 style="color: #850F8D; margin-bottom: 20px; text-align: center;">🤔 Otázka na zamyšlení</h2>
+            <div class="question-container">
+                <div class="question">Co se na burze NEKUPUJE?</div>
+                <div class="answers">
+                    <div class="answer-btn" onclick="checkAnswer(this, false)">
+                        <strong>A)</strong> Akcie Apple
+                    </div>
+                    <div class="answer-btn" onclick="checkAnswer(this, false)">
+                        <strong>B)</strong> Akcie Microsoft
+                    </div>
+                    <div class="answer-btn" onclick="checkAnswer(this, true)">
+                        <strong>C)</strong> Housky
+                    </div>
+                    <div class="answer-btn" onclick="checkAnswer(this, false)">
+                        <strong>D)</strong> Akcie Tesla
+                    </div>
+                </div>
+                <div class="feedback" id="questionFeedback"></div>
+            </div>
+        </div>
+
+    <div class="summary">
+            <h2>🎉 Skvělá práce!</h2>
+            <div class="xp-award"></div>
+            <a class="linkie" href="" ><button class="completion-badge">Přejdi na další cvičení</button></a>
+        </div>  
+    
+         </div>
+
+           <script>
+        // Globální proměnné
+        let questionAnswered = false;
+        let calcAnswered = false;
+        let gameScore = 0;
+        let gameRound = 0;
+        let mistakeCount = 0;
+        let mistakesFound = 0;
+
+        // Herní data
+        const gameItems = [
+            { name: "🍎 Prodej jablek", isStockExchange: false, explanation: "Jablka se prodávají na tržišti, ne na burze!" },
+            { name: "📱 Akcie Apple", isStockExchange: true, explanation: "Akcie se obchodují na burze!" },
+            { name: "🥕 Prodej mrkve", isStockExchange: false, explanation: "Zelenina patří na tržiště!" },
+            { name: "🚗 Akcie Tesla", isStockExchange: true, explanation: "Akcie automobilky se obchodují na burze!" },
+            { name: "👕 Prodej oblečení", isStockExchange: false, explanation: "Oblečení se prodává v obchodě, ne na burze!" },
+            { name: "💻 Akcie Microsoft", isStockExchange: true, explanation: "Technologické akcie jsou na burze!" }
+        ];
+
+        let shuffledItems = [...gameItems].sort(() => Math.random() - 0.5);
+
+        // Funkce pro aktualizaci progress baru
+        function updateProgress() {
+            const totalSections = 5; // otázka, kalkulace, hra, blbost, shrnutí
+            let completedSections = 0;
+            
+            if (questionAnswered) completedSections++;
+            if (calcAnswered) completedSections++;
+            if (gameRound >= 3) completedSections++;
+            if (mistakesFound >= 2) completedSections++;
+            completedSections++; // shrnutí je vždy aktivní
+            
+            const progress = (completedSections / totalSections) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+            const completion = document.getElementsByClassName("completion-badge")
+completion.disabled = "true"
+        // Funkce pro kontrolu odpovědi
+        function checkAnswer(button, isCorrect) {
+    if (questionAnswered) return;
+    
+    const buttons = document.querySelectorAll('.answer-btn');
+    const feedback = document.getElementById('questionFeedback');
+    const answerButton = document.querySelector(".completion-badge");
+    const linkie = document.querySelector(".linkie");
+
+    buttons.forEach(btn => btn.style.pointerEvents = 'none');
+    
+    if (isCorrect) {
+        button.classList.add('correct');
+        feedback.className = 'feedback correct';
+        feedback.innerHTML = '🎉 Správně! Housky se kupují v pekárně, ne na burze!';
+
+        // Aktivuj tlačítko po správné odpovědi
+        linkie.href = "druha.html";
+        linkie.classList.remove("disabled");
+        answerButton.disabled = false;
+
+    } else {
+        button.classList.add('incorrect');
+        feedback.className = 'feedback correct';
+        feedback.innerHTML = '❌ Správná odpověď je C) Housky. Na burze se obchoduje jen s akciemi!';
+        
+linkie.href = "druha.html";
+        linkie.classList.remove("disabled");
+        answerButton.disabled = false;
+
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('C) Housky')) {
+                btn.classList.add('correct');
+            }
+        });
+    }
+    
+    feedback.style.display = 'block';
+    questionAnswered = true;
+    updateProgress();
+}
+
+
+        // Funkce pro kontrolu výpočtu
+        function checkCalculation() {
+            if (calcAnswered) return;
+            
+            const input = document.getElementById('calcInput');
+            const result = document.getElementById('calcResult');
+            const answer = parseFloat(input.value);
+                const linkie = document.querySelector(".linkie");
+
+
+
+            if (answer === 500) {
+                result.className = 'calc-result correct';
+                result.innerHTML = '🎉 Perfektní! 5 × 100 Kč = 500 Kč<br>Takto se počítá nákup na burze!';
+                  linkie.href = "treti.html";
+        linkie.classList.remove("disabled");
+        answerButton.disabled = false;
+            } else {
+                result.className = 'calc-result incorrect';
+                result.innerHTML = '❌ Správná odpověď je 500 Kč<br>Výpočet: 5 akcií × 100 Kč = 500 Kč';
+                  linkie.href = "treti.html";
+        linkie.classList.remove("disabled");
+        answerButton.disabled = false;
+            }
+            
+            result.style.display = 'block';
+            calcAnswered = true;
+            updateProgress();
+        }
+
+        // Funkce pro hru
+        function gameAnswer(playerAnswer) {
+            if (gameRound >= 3) return;
+            
+            const currentItem = shuffledItems[gameRound];
+            const feedback = document.getElementById('gameFeedback');
+            const isCorrect = playerAnswer === currentItem.isStockExchange;
+            
+            if (isCorrect) {
+                gameScore++;
+                feedback.className = 'game-feedback correct';
+                feedback.innerHTML = '✅ Správně! ' + currentItem.explanation;
+            } else {
+                feedback.className = 'game-feedback incorrect';
+                feedback.innerHTML = '❌ Špatně! ' + currentItem.explanation;
+            }
+            
+            feedback.style.display = 'block';
+            document.getElementById('gameScore').textContent = gameScore;
+            
+            gameRound++;
+            
+            setTimeout(() => {
+                if (gameRound < 3) {
+                    nextGameRound();
+                } else {
+                    endGame();
+                }
+            }, 2000);
+        }
+
+        function nextGameRound() {
+            document.getElementById('gameCard').textContent = shuffledItems[gameRound].name;
+            document.getElementById('gameFeedback').style.display = 'none';
+        }
+
+        function endGame() {
+            const feedback = document.getElementById('gameFeedback');
+            feedback.className = 'game-feedback correct';
+            feedback.innerHTML = `🎮 Hra dokončena! Skóre: ${gameScore}/3<br>Už rozumíš rozdílu mezi burzou a tržištěm!`;
+            feedback.style.display = 'block';
+            
+            // Deaktivuj tlačítka
+            document.querySelectorAll('.game-btn').forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.5';
+            });
+            
+            updateProgress();
+        }
+
+        // Funkce pro hledání chyb
+        function checkMistake(element, isMistake) {
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return; // Už bylo kliknuto
+            }
+            
+            const feedback = document.getElementById('mistakeFeedback');
+            
+            if (isMistake) {
+                element.classList.add('correct');
+                mistakesFound++;
+                mistakeCount++;
+                
+                if (mistakesFound === 1) {
+                    feedback.className = 'mistake-feedback correct';
+                    feedback.innerHTML = '🎯 Výborně! Našel jsi chybu. Investice nejsou "vždy" jisté!';
+                    feedback.style.display = 'block';
+                } else if (mistakesFound === 2) {
+                    feedback.className = 'mistake-feedback correct';
+                    feedback.innerHTML = '🎉 Perfektní! Druhá chyba je "jistý" - investice nikdy nejsou 100% jisté!';
+                    feedback.style.display = 'block';
+                    updateProgress();
+                }
+            } else {
+                element.classList.add('incorrect');
+                feedback.className = 'mistake-feedback incorrect';
+                feedback.innerHTML = '❌ Tohle není chyba. Hledej slova, která investice dělají příliš jistými!';
+                feedback.style.display = 'block';
+            }
+            
+            document.getElementById('mistakeCount').textContent = mistakeCount;
+        }
+
+        // Inicializace hry
+        function initGame() {
+            document.getElementById('gameCard').textContent = shuffledItems[0].name;
+            document.getElementById('gameScore').textContent = gameScore;
+            document.getElementById('mistakeCount').textContent = mistakeCount;
+        }
+
+        // Spustí hru při načtení stránky
+        window.onload = function() {
+            initGame();
+            updateProgress();
+        };
+
+        // Umožní enter v kalkulačce
+        document.getElementById('calcInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkCalculation();
+            }
+        });
+    </script>
+</body>
+</html>
