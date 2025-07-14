@@ -488,7 +488,6 @@
 
         // Funkce pro aktualizaci progress baru
         function updateProgress() {
-            document.querySelector(".shoutout").classList.remove("hidden");
             const totalSections = 5; // otázka, kalkulace, hra, blbost, shrnutí
             let completedSections = 1;
             
@@ -560,12 +559,16 @@ completion.disabled = "true"
                   linkie.href = "treti.html";
         linkie.classList.remove("disabled");
         answerButton.disabled = false;
+                            document.querySelector(".shoutout").classList.remove("hidden");
+
             } else {
                 result.className = 'calc-result incorrect';
                 result.innerHTML = '❌ Správná odpověď je 500 Kč<br>Výpočet: 5 akcií × 100 Kč = 500 Kč';
                   linkie.href = "treti.html";
         linkie.classList.remove("disabled");
         answerButton.disabled = false;
+                            document.querySelector(".shoutout").classList.remove("hidden");
+
             }
             
             result.style.display = 'block';
