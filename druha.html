@@ -40,7 +40,9 @@
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-
+        .hidden {
+            display: hidden;
+        }
         .progress-bar {
             width: 100%;
             height: 8px;
@@ -455,7 +457,7 @@
 
 
     <div class="summary">
-            <h2>🎉 Skvělá práce!</h2>
+            <h2 class="hidden shoutout">🎉 Skvělá práce!</h2>
             <div class="xp-award"></div>
             <a class="linkie" href="" ><button class="completion-badge">Přejdi na další cvičení</button></a>
         </div>  
@@ -486,6 +488,7 @@
 
         // Funkce pro aktualizaci progress baru
         function updateProgress() {
+            document.querySelector(".shoutout").classList.remove("hidden");
             const totalSections = 5; // otázka, kalkulace, hra, blbost, shrnutí
             let completedSections = 1;
             
