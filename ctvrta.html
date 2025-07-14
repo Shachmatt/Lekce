@@ -132,7 +132,9 @@
             gap: 15px;
             margin-bottom: 20px;
         }
-
+        .hidden {
+            display: none;
+        }
         .answer-btn {
             padding: 20px;
             background: white;
@@ -450,7 +452,7 @@
         </div> 
       
  <div class="summary">
-            <h2>🎉 Skvělá práce!</h2>
+            <h2 class="shoutout hidden">🎉 Skvělá práce!</h2>
             <div class="xp-award"></div>
             <a class="linkie" href="" ><button class="completion-badge">Dokončit lekci</button></a>
         </div>  
@@ -639,6 +641,8 @@ const answerButton = document.querySelector(".completion-badge")
              linkie.href = "pata.html";
         linkie.classList.remove("disabled");
         answerButton.disabled = false;
+                                document.querySelector(".shoutout").classList.remove("hidden");
+
 
                 }
             } else {
