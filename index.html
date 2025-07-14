@@ -340,7 +340,9 @@
             background: #C738BD;
             transform: translateY(-2px);
         }
-
+        .hidden {
+            display: none;
+        }
         .mistake-word.correct {
             background: #f44336;
             animation: shake 0.5s;
@@ -481,7 +483,7 @@
         </div>
 
     <div class="summary">
-            <h2>🎉 Skvělá práce!</h2>
+            <h2 class="shoutout hidden">🎉 Skvělá práce!</h2>
             <div class="xp-award"></div>
             <a class="linkie" href="" ><button class="completion-badge">Přejdi na další cvičení</button></a>
         </div>  
@@ -511,6 +513,7 @@
 
         // Funkce pro aktualizaci progress baru
         function updateProgress() {
+            document.querySelector(".shoutout").classList.remove("hidden");
             const totalSections = 5; // otázka, kalkulace, hra, blbost, shrnutí
             let completedSections = 0;
             
