@@ -457,7 +457,7 @@
 
 
     <div class="summary">
-            <h2 class="hidden shoutout">🎉 Skvělá práce!</h2>
+            <h2 class="shoutout hidden">🎉 Skvělá práce!</h2>
             <div class="xp-award"></div>
             <a class="linkie" href="" ><button class="completion-badge">Přejdi na další cvičení</button></a>
         </div>  
@@ -488,6 +488,7 @@
 
         // Funkce pro aktualizaci progress baru
         function updateProgress() {
+            document.querySelector(".shoutout").classList.remove("hidden");
             document.querySelector(".shoutout").classList.remove("hidden");
             const totalSections = 5; // otázka, kalkulace, hra, blbost, shrnutí
             let completedSections = 1;
