@@ -34,6 +34,9 @@
             text-align: center;
             position: relative;
         }
+       .hidden {
+           display: none;
+       }
 
         .header h1 {
             font-size: 2.5em;
@@ -456,7 +459,7 @@
     </div>    
       
  <div class="summary">
-            <h2>🎉 Skvělá práce!</h2>
+            <h2 class="shoutout hidden">🎉 Skvělá práce!</h2>
             <div class="xp-award"></div>
             <a class="linkie" href="" ><button class="completion-badge">Přejdi na další cvičení</button></a>
         </div>  
@@ -618,6 +621,8 @@ const answerButton = document.querySelector(".completion-badge")
              linkie.href = "ctvrta.html";
         linkie.classList.remove("disabled");
         answerButton.disabled = false;
+
+                        document.querySelector(".shoutout").classList.remove("hidden");
             
             updateProgress();
         }
